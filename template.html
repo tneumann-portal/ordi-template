@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+
+<!-- KONFIGURATIONSDATEI – NUR DIESE DATEI PRO KUNDE ANPASSEN -->
+<script src="config.js"></script>
+
+<style>
+  :root {
+    --rose:        #b85c6e;
+    --rose-deep:   #8a3f51;
+    --rose-light:  #f7eef0;
+    --rose-mist:   #fdf5f6;
+    --stone:       #2a2320;
+    --stone-mid:   #5a4e4a;
+    --stone-light: #9a8e8a;
+    --cream:       #faf7f4;
+    --border:      #e8ddd8;
+    --gold:        #c9a96e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; font-weight: 300; color: var(--stone); background: #fff; line-height: 1.7; }
+  a { color: inherit; text-decoration: none; }
+
+  .display { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2.8rem, 7vw, 5.5rem); line-height: 1.08; }
+  .heading  { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.2; }
+  .label    { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rose); }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 64px; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--stone); }
+  .nav-logo span { color: var(--rose); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-links a { font-size: 0.82rem; color: var(--stone-mid); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--rose); }
+  .nav-cta { background: var(--rose); color: #fff !important; padding: 0.5rem 1.2rem; border-radius: 2px; font-size: 0.78rem !important; font-weight: 500 !important; letter-spacing: 0.08em !important; text-transform: uppercase; transition: background 0.2s !important; }
+  .nav-cta:hover { background: var(--rose-deep) !important; }
+  .lang-pill { display: flex; align-items: center; gap: 2px; border: 0.5px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .lang-pill a { font-size: 0.72rem; font-weight: 500; padding: 4px 8px; color: var(--stone-light); transition: all 0.15s; }
+  .lang-pill a.active { color: var(--rose); font-weight: 600; background: var(--rose-mist); }
+  .lang-pill span { width: 0.5px; background: var(--border); display: block; height: 20px; }
+
+  /* BUTTONS */
+  .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--rose); color: #fff; padding: 0.85rem 1.8rem; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--rose-deep); }
+  .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: var(--stone); padding: 0.85rem 1.8rem; font-size: 0.82rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--border); cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .btn-outline:hover { border-color: var(--rose); color: var(--rose); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 64px; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 8vw 5vw 8vw 8vw; background: var(--cream); position: relative; }
+  .hero-left::after { content: ''; position: absolute; right: -1px; top: 10%; bottom: 10%; width: 1px; background: var(--border); }
+  .hero-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--rose); }
+  .hero-display { margin-bottom: 2rem; }
+  .hero-display em { font-style: italic; color: var(--rose); }
+  .hero-subtitle { font-size: 1rem; color: var(--stone-mid); line-height: 1.8; max-width: 38ch; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-stats { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; gap: 2.5rem; }
+  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; line-height: 1; }
+  .stat-label { font-size: 0.72rem; color: var(--stone-light); margin-top: 0.25rem; }
+  .hero-right { position: relative; background: var(--rose-mist); display: flex; flex-direction: column; justify-content: flex-end; padding: 4rem; overflow: hidden; }
+  .hero-pattern { position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 20%, rgba(184,92,110,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(184,92,110,0.06) 0%, transparent 40%); }
+  .hero-botanical { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; opacity: 0.08; }
+  .times-card { position: relative; z-index: 1; background: #fff; border: 1px solid var(--border); padding: 2rem; border-radius: 4px; box-shadow: 0 4px 40px rgba(42,35,32,0.06); }
+  .times-row { display: grid; gap: 1.5rem; margin-top: 1rem; }
+  .times-doc-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--stone); margin-bottom: 0.4rem; }
+  .times-doc-day { font-size: 0.85rem; font-weight: 500; color: var(--stone-mid); }
+  .times-doc-hours { font-size: 0.78rem; color: var(--stone-light); margin-top: 0.15rem; }
+  .times-doc-ins { display: inline-block; margin-top: 0.5rem; font-size: 0.68rem; letter-spacing: 0.06em; color: var(--rose); border: 1px solid var(--rose-light); border-radius: 2px; padding: 0.15rem 0.5rem; background: var(--rose-mist); }
+  .times-contact { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--stone-mid); display: flex; flex-direction: column; gap: 0.3rem; }
+  .times-contact a { color: var(--rose); }
+
+  /* SECTIONS */
+  .section { padding: 7rem 8vw; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-header { margin-bottom: 4rem; }
+  .section-header .label { margin-bottom: 0.75rem; display: block; }
+
+  /* LEISTUNGEN */
+  .leistungen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .leistung-item { background: #fff; padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.2s; }
+  .leistung-item:hover { background: var(--rose-mist); }
+  .leistung-icon { font-size: 1.5rem; color: var(--rose); margin-bottom: 0.25rem; }
+  .leistung-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; color: var(--stone); }
+  .leistung-desc { font-size: 0.82rem; color: var(--stone-light); line-height: 1.6; }
+
+  /* TEAM */
+  .ueber-section { padding: 7rem 8vw; background: var(--cream); }
+  .ueber-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 4rem; }
+  .arzt-photo-wrap { width: 100%; aspect-ratio: 4/5; background: var(--rose-mist); border: 1px solid var(--border); position: relative; overflow: hidden; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; }
+  .arzt-photo-initials { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; color: var(--rose); opacity: 0.4; }
+  .arzt-photo-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--rose); }
+  .arzt-role { margin-bottom: 0.5rem; }
+  .arzt-name { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 1rem; }
+  .arzt-bio { font-size: 0.9rem; color: var(--stone-mid); line-height: 1.9; margin-bottom: 1.5rem; }
+  .schwerpunkt-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+  .schwerpunkt-tag { font-size: 0.75rem; border: 1px solid var(--border); border-radius: 2px; padding: 0.25rem 0.6rem; color: var(--stone-mid); background: #fff; }
+
+  /* PORTAL */
+  .portal-section { padding: 7rem 8vw; background: var(--stone); position: relative; overflow: hidden; }
+  .portal-bg { position: absolute; inset: 0; background: radial-gradient(circle at 10% 50%, rgba(184,92,110,0.15) 0%, transparent 50%), radial-gradient(circle at 90% 50%, rgba(184,92,110,0.08) 0%, transparent 40%); }
+  .portal-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .portal-text .label { color: var(--gold); margin-bottom: 1rem; display: block; }
+  .portal-text .heading { color: #fff; margin-bottom: 1.5rem; }
+  .portal-text p { color: rgba(255,255,255,0.65); line-height: 1.8; font-size: 0.95rem; margin-bottom: 2rem; }
+  .portal-features { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+  .portal-feature { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.88rem; color: rgba(255,255,255,0.75); }
+  .portal-feature-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); flex-shrink: 0; margin-top: 0.55rem; }
+  .portal-widget { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; overflow: hidden; }
+  .portal-widget-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 0.75rem; }
+  .portal-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .portal-widget-title { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+  .portal-iframe-overlay { height: 320px; display: flex; align-items: center; justify-content: center; background: rgba(250,247,244,0.85); flex-direction: column; gap: 1rem; }
+  .portal-iframe-overlay p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--stone); text-align: center; padding: 0 2rem; }
+
+  /* KONTAKT */
+  .kontakt-section { padding: 7rem 8vw; }
+  .kontakt-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+  .kontakt-block { margin-bottom: 2.5rem; }
+  .kontakt-block .label { display: block; margin-bottom: 0.75rem; }
+  .kontakt-block p { font-size: 0.92rem; color: var(--stone-mid); line-height: 1.9; }
+  .kontakt-block a { color: var(--rose); }
+  .kontakt-map { background: var(--rose-mist); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; min-height: 400px; }
+  .kontakt-map iframe { width: 100%; height: 100%; min-height: 400px; border: 0; }
+
+  /* FOOTER */
+  footer { padding: 3rem 8vw; background: var(--cream); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--stone-mid); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.78rem; color: var(--stone-light); letter-spacing: 0.04em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose); }
+  .footer-lang { display: flex; gap: 0; }
+  .footer-lang a { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone-light); padding: 2px 8px; border: 0.5px solid var(--border); transition: all 0.15s; }
+  .footer-lang a.active { color: var(--rose); font-weight: 600; background: var(--rose-mist); }
+
+  /* MODALS */
+  .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(42,35,32,0.6); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 2rem; }
+  .modal-backdrop.open { display: flex; }
+  .modal-box { background: #fff; max-width: 680px; width: 100%; max-height: 85vh; overflow-y: auto; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1.75rem 2rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; z-index: 1; }
+  .modal-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; }
+  .modal-close { background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--stone-light); padding: 4px; transition: color 0.2s; }
+  .modal-close:hover { color: var(--stone); }
+  .modal-body { padding: 2rem; font-size: 0.88rem; color: var(--stone-mid); line-height: 1.9; }
+  .modal-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; color: var(--stone); margin: 1.75rem 0 0.5rem; }
+  .modal-body h3:first-child { margin-top: 0; }
+  .modal-body p { margin-bottom: 0.75rem; }
+  .modal-body a { color: var(--rose); }
+
+  /* MOBILE */
+  .mobile-controls { display: none; align-items: center; gap: 10px; }
+  .mobile-menu-btn { display: flex; background: none; border: none; cursor: pointer; flex-direction: column; gap: 4px; padding: 4px; }
+  .mobile-menu-btn span { display: block; width: 22px; height: 1.5px; background: var(--stone); }
+
+  @media (max-width: 480px) {
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+    .display { font-size: 2.2rem; }
+  }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 4rem 6vw 3rem; }
+    .hero-left::after { display: none; }
+    .hero-right { padding: 3rem 6vw; min-height: 300px; }
+    .ueber-grid { grid-template-columns: 1fr; }
+    .portal-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .kontakt-inner { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .mobile-controls { display: flex; }
+    footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" id="nav-logo">Ordination <span>Dr.</span></div>
+  <div class="nav-links" id="nav-links">
+    <a href="#leistungen" id="nav-services">Leistungen</a>
+    <a href="#ueber-uns" id="nav-about">Über uns</a>
+    <a href="#kontakt" id="nav-contact">Kontakt</a>
+    <div class="lang-pill" id="lang-pill-desktop"></div>
+    <a href="#" id="nav-portal-btn" class="nav-cta" target="_blank" rel="noopener noreferrer">Online Portal</a>
+  </div>
+  <div class="mobile-controls">
+    <div class="lang-pill" id="lang-pill-mobile"></div>
+    <button class="mobile-menu-btn" aria-label="Menü" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow"><span class="label" id="hero-eyebrow"></span></div>
+    <h1 class="display hero-display" id="hero-h1"></h1>
+    <p class="hero-subtitle" id="hero-sub"></p>
+    <div class="hero-actions">
+      <a href="#" id="hero-cta1" class="btn-primary portal-link" target="_blank" rel="noopener noreferrer"></a>
+      <a href="#ueber-uns" id="hero-cta2" class="btn-outline"></a>
+    </div>
+    <div class="hero-stats" id="hero-stats"></div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-pattern"></div>
+    <svg class="hero-botanical" viewBox="0 0 400 500" fill="none">
+      <ellipse cx="200" cy="250" rx="80" ry="140" stroke="#b85c6e" stroke-width="1" fill="none"/>
+      <ellipse cx="200" cy="250" rx="50" ry="100" stroke="#b85c6e" stroke-width="0.8" fill="none" transform="rotate(30 200 250)"/>
+      <ellipse cx="200" cy="250" rx="50" ry="100" stroke="#b85c6e" stroke-width="0.8" fill="none" transform="rotate(-30 200 250)"/>
+      <ellipse cx="200" cy="250" rx="50" ry="100" stroke="#b85c6e" stroke-width="0.8" fill="none" transform="rotate(60 200 250)"/>
+      <circle cx="200" cy="250" r="8" stroke="#b85c6e" stroke-width="1" fill="none"/>
+      <line x1="200" y1="110" x2="200" y2="390" stroke="#b85c6e" stroke-width="0.5"/>
+      <line x1="60" y1="250" x2="340" y2="250" stroke="#b85c6e" stroke-width="0.5"/>
+    </svg>
+    <div class="times-card">
+      <span class="label" id="times-title"></span>
+      <div class="times-row" id="times-rows"></div>
+      <div class="times-contact" id="times-contact"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEISTUNGEN -->
+<section class="section" id="leistungen">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="label" id="services-eyebrow"></span>
+      <h2 class="heading" id="services-h2"></h2>
+    </div>
+    <div class="leistungen-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="ueber-section" id="ueber-uns">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="label" id="team-eyebrow"></span>
+      <h2 class="heading" id="team-h2"></h2>
+    </div>
+    <div class="ueber-grid" id="team-grid"></div>
+  </div>
+</section>
+
+<!-- PORTAL -->
+<section class="portal-section" id="portal">
+  <div class="portal-bg"></div>
+  <div class="portal-inner">
+    <div class="portal-text">
+      <span class="label" id="portal-eyebrow"></span>
+      <h2 class="heading" id="portal-h2"></h2>
+      <p id="portal-sub"></p>
+      <div class="portal-features" id="portal-features"></div>
+      <a href="#" id="portal-cta-btn" class="btn-primary portal-link" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+    <div class="portal-widget">
+      <div class="portal-widget-header">
+        <div class="portal-dot" style="background:#ff5f57"></div>
+        <div class="portal-dot" style="background:#ffbd2e"></div>
+        <div class="portal-dot" style="background:#28c840"></div>
+        <span class="portal-widget-title" id="portal-widget-title"></span>
+      </div>
+      <div class="portal-iframe-overlay">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#b85c6e" stroke-width="1.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p id="portal-badge"></p>
+        <a href="#" id="portal-overlay-btn" class="btn-primary portal-link" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem;padding:0.7rem 1.4rem"></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="kontakt-section" id="kontakt">
+  <div class="kontakt-inner">
+    <div>
+      <div class="section-header" style="margin-bottom:2.5rem">
+        <span class="label" id="contact-eyebrow"></span>
+        <h2 class="heading" id="contact-h2"></h2>
+      </div>
+      <div class="kontakt-block">
+        <span class="label" id="contact-addr-title"></span>
+        <p id="contact-addr-body"></p>
+      </div>
+      <div class="kontakt-block">
+        <span class="label" id="contact-tel-title"></span>
+        <p id="contact-tel-body"></p>
+      </div>
+      <div class="kontakt-block">
+        <span class="label" id="contact-times-title"></span>
+        <p id="contact-times-body"></p>
+      </div>
+      <a href="#" id="contact-cta" class="btn-primary portal-link" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+    <div class="kontakt-map">
+      <iframe id="maps-iframe" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo" id="footer-logo"></div>
+  <div class="footer-links">
+    <a href="#" id="footer-impressum" onclick="openModal('impressum');return false;"></a>
+    <a href="#" id="footer-datenschutz" onclick="openModal('datenschutz');return false;"></a>
+    <a href="#" id="footer-partner" onclick="openModal('partner');loadPartners();return false;"></a>
+  </div>
+  <div class="footer-lang" id="footer-lang"></div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modal-impressum" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-header"><h2 id="modal-impressum-title">Impressum</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modal-impressum-body"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-datenschutz" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-header"><h2 id="modal-datenschutz-title">Datenschutz</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modal-datenschutz-body"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-partner" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" style="max-width:720px">
+    <div class="modal-header"><h2 id="modal-partner-title">Partner</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <p style="margin-bottom:1.5rem;color:var(--stone-mid)" id="partner-intro"></p>
+      <div id="partner-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Sprache ──────────────────────────────────────────────────
+const _urlLang = new URLSearchParams(window.location.search).get('lang');
+let lang = (ORDI_CONFIG.languages.includes(_urlLang) ? _urlLang : ORDI_CONFIG.defaultLang);
+
+function t(obj) {
+  if (!obj) return '';
+  if (typeof obj === 'string') return obj;
+  return obj[lang] || obj[ORDI_CONFIG.defaultLang] || '';
+}
+
+// ── Farben aus Config setzen ─────────────────────────────────
+const FONT_PAIRS = {
+  classic: { display: "'Cormorant Garamond', serif", body: "'Inter', sans-serif" },
+  modern:  { display: "'Playfair Display', serif",   body: "'DM Sans', sans-serif" },
+  clean:   { display: "'Libre Baskerville', serif",  body: "'Source Sans 3', sans-serif" },
+};
+
+function applyColors() {
+  const r = document.documentElement.style;
+  r.setProperty('--rose',        ORDI_CONFIG.colorPrimary);
+  r.setProperty('--rose-deep',   ORDI_CONFIG.colorPrimaryDark);
+  r.setProperty('--rose-light',  ORDI_CONFIG.colorPrimaryLight);
+  r.setProperty('--rose-mist',   ORDI_CONFIG.colorPrimaryMist);
+
+  // Schriftart anwenden
+  const pair = FONT_PAIRS[ORDI_CONFIG.font || 'classic'] || FONT_PAIRS.classic;
+  r.setProperty('--font-display', pair.display);
+  r.setProperty('--font-body',    pair.body);
+  document.body.style.fontFamily = pair.body;
+  document.querySelectorAll('.display, .heading, .arzt-name, .nav-logo, .footer-logo, .times-doc-name, .leistung-name, .modal-header h2').forEach(el => {
+    el.style.fontFamily = pair.display;
+  });
+}
+
+// ── Sprach-Buttons bauen ─────────────────────────────────────
+function buildLangPills() {
+  const langs = ORDI_CONFIG.languages;
+  if (langs.length < 2) return;
+  const html = langs.map((l, i) =>
+    (i > 0 ? '<span style="width:0.5px;background:var(--border);display:block;height:20px"></span>' : '') +
+    '<a href="#" data-lang="' + l + '" onclick="setLang(\'' + l + '\');return false;" class="' + (l === lang ? 'active' : '') + '">' + l.toUpperCase() + '</a>'
+  ).join('');
+  document.getElementById('lang-pill-desktop').innerHTML = html;
+  document.getElementById('lang-pill-mobile').innerHTML = html;
+}
+
+// ── Seite befüllen ───────────────────────────────────────────
+function renderPage() {
+  const C = ORDI_CONFIG;
+  const TX = C.texts;
+
+  // Meta
+  document.title = C.name + ' – ' + C.specialty;
+  document.documentElement.lang = lang;
+
+  // Portal links
+  const portalUrl = C.portalUrl ? C.portalUrl + '?lang=' + lang : '#';
+  document.querySelectorAll('.portal-link').forEach(a => a.href = portalUrl);
+  if (!C.portalUrl) document.querySelectorAll('.portal-link, #nav-portal-btn, [id*="portal"]').forEach(el => { if (el.tagName === 'A') el.style.display = 'none'; });
+
+  // Nav
+  document.getElementById('nav-logo').innerHTML = C.name.replace(/(Dr\.|OA|OÄ)?\s*([^·]+)/, (m, p1, p2) => (p1 ? p1 + ' <span>' : 'Ordination <span>') + p2.trim() + '</span>');
+  document.getElementById('nav-services').textContent = t(TX.nav.services);
+  document.getElementById('nav-about').textContent = t(TX.nav.about);
+  document.getElementById('nav-contact').textContent = t(TX.nav.contact);
+  if (C.portalUrl) document.getElementById('nav-portal-btn').textContent = t(TX.nav.portal);
+  else document.getElementById('nav-portal-btn').style.display = 'none';
+
+  // Hero
+  document.getElementById('hero-eyebrow').textContent = t(TX.hero.eyebrow);
+  document.getElementById('hero-h1').innerHTML = t(TX.hero.h1);
+  document.getElementById('hero-sub').textContent = t(TX.hero.sub);
+  document.getElementById('hero-cta1').textContent = t(TX.hero.cta1);
+  document.getElementById('hero-cta2').textContent = t(TX.hero.cta2);
+  if (!C.portalUrl) document.getElementById('hero-cta1').style.display = 'none';
+
+  // Stats
+  document.getElementById('hero-stats').innerHTML = C.stats.map(s =>
+    '<div><div class="stat-number">' + s.number + '</div><div class="stat-label">' + t(s.label) + '</div></div>'
+  ).join('');
+
+  // Times card
+  document.getElementById('times-title').textContent = t(TX.contact.times_title);
+  document.getElementById('times-rows').innerHTML = C.doctors.map(d =>
+    '<div><div class="times-doc-name">' + d.title + ' ' + d.name + '</div>' +
+    '<div class="times-doc-day">' + t(d.days) + '</div>' +
+    '<div class="times-doc-hours">' + t(d.hours) + '</div>' +
+    '<span class="times-doc-ins">' + t(d.insurance) + '</span></div>'
+  ).join('');
+  document.getElementById('times-rows').style.gridTemplateColumns = C.doctors.length > 1 ? '1fr 1fr' : '1fr';
+  document.getElementById('times-contact').innerHTML =
+    '<span>📞 <a href="tel:' + C.phone + '">' + C.phone + '</a></span>' +
+    '<span>✉ <a href="mailto:' + C.email + '">' + C.email + '</a></span>' +
+    '<span>📍 ' + C.address + ', ' + C.zip + ' ' + C.cityName + '</span>';
+
+  // Leistungen
+  document.getElementById('services-eyebrow').textContent = t(TX.services.eyebrow);
+  document.getElementById('services-h2').innerHTML = t(TX.services.h2);
+  document.getElementById('services-grid').innerHTML = C.services.map(s =>
+    '<div class="leistung-item">' +
+    '<i class="ti ' + s.icon + ' leistung-icon"></i>' +
+    '<div class="leistung-name">' + t(s.name) + '</div>' +
+    '<div class="leistung-desc">' + t(s.desc) + '</div>' +
+    '</div>'
+  ).join('');
+
+  // Team
+  document.getElementById('team-eyebrow').textContent = t(TX.team.eyebrow);
+  document.getElementById('team-h2').innerHTML = t(TX.team.h2);
+  document.getElementById('team-grid').innerHTML = C.doctors.map(d =>
+    '<div class="arzt-card">' +
+    '<div class="arzt-photo-wrap"><div class="arzt-photo-initials">' + d.initials + '</div><div class="arzt-photo-bar" style="background:' + d.color + '"></div></div>' +
+    '<span class="label arzt-role">' + t(d.role) + '</span>' +
+    '<h3 class="arzt-name">' + d.title + ' ' + d.name + '</h3>' +
+    '<p class="arzt-bio">' + t(d.bio) + '</p>' +
+    '<div><span class="label" style="display:block;margin-bottom:0.6rem">' + t(TX.team.tags) + '</span>' +
+    '<div class="schwerpunkt-tags">' + (t(d.tags) || []).map(tag => '<span class="schwerpunkt-tag">' + tag + '</span>').join('') + '</div></div>' +
+    '</div>'
+  ).join('');
+
+  // Portal section
+  if (C.portalUrl) {
+    document.getElementById('portal-eyebrow').textContent = t(TX.portal.eyebrow);
+    document.getElementById('portal-h2').innerHTML = t(TX.portal.h2);
+    document.getElementById('portal-sub').textContent = t(TX.portal.sub);
+    document.getElementById('portal-features').innerHTML = (t(TX.portal.features) || []).map(f =>
+      '<div class="portal-feature"><div class="portal-feature-dot"></div><span>' + f + '</span></div>'
+    ).join('');
+    document.getElementById('portal-cta-btn').textContent = t(TX.portal.cta);
+    document.getElementById('portal-badge').textContent = t(TX.portal.badge);
+    document.getElementById('portal-overlay-btn').textContent = t(TX.portal.cta);
+    document.getElementById('portal-widget-title').textContent = C.name;
+  } else {
+    document.querySelector('.portal-section').style.display = 'none';
+  }
+
+  // Kontakt
+  document.getElementById('contact-eyebrow').textContent = t(TX.contact.eyebrow);
+  document.getElementById('contact-h2').innerHTML = t(TX.contact.h2);
+  document.getElementById('contact-addr-title').textContent = t(TX.contact.addr_title);
+  document.getElementById('contact-addr-body').innerHTML = C.address + '<br>' + C.zip + ' ' + C.cityName + '<br><br>' + (C.mapsHint || '');
+  document.getElementById('contact-tel-title').textContent = t(TX.contact.tel_title);
+  document.getElementById('contact-tel-body').innerHTML =
+    '<a href="tel:' + C.phone + '">' + C.phone + '</a> (' + t(TX.contact.tel_hours) + ')<br>' +
+    '<a href="mailto:' + C.email + '">' + C.email + '</a>';
+  document.getElementById('contact-times-title').textContent = t(TX.contact.times_title);
+  document.getElementById('contact-times-body').innerHTML = C.doctors.map(d =>
+    '<strong>' + d.title + ' ' + d.name + '</strong><br>' + t(d.days) + ', ' + t(d.hours)
+  ).join('<br><br>') + '<br><br>' + (lang === 'de' ? 'Termine nach Vereinbarung auch außerhalb dieser Zeiten möglich.' : lang === 'hu' ? 'Megbeszélés alapján az időpontokon kívül is lehetséges.' : 'Appointments by arrangement also possible outside these hours.');
+  document.getElementById('contact-cta').textContent = t(TX.contact.cta);
+  if (!C.portalUrl) document.getElementById('contact-cta').style.display = 'none';
+
+  // Maps
+  if (C.mapsEmbed) document.getElementById('maps-iframe').src = C.mapsEmbed;
+
+  // Footer
+  document.getElementById('footer-logo').textContent = C.name + ' · ' + C.specialty;
+  document.getElementById('footer-impressum').textContent = t(TX.footer.impressum);
+  document.getElementById('footer-datenschutz').textContent = t(TX.footer.datenschutz);
+  document.getElementById('footer-partner').textContent = t(TX.footer.partner);
+  document.getElementById('footer-lang').innerHTML = ORDI_CONFIG.languages.map(l =>
+    '<a href="#" data-lang="' + l + '" onclick="setLang(\'' + l + '\');return false;" class="' + (l === lang ? 'active' : '') + '">' + l.toUpperCase() + '</a>'
+  ).join('');
+
+  // Lang pills active state
+  document.querySelectorAll('[data-lang]').forEach(a => {
+    const isActive = a.dataset.lang === lang;
+    a.classList.toggle('active', isActive);
+    a.style.color = isActive ? 'var(--rose)' : '';
+    a.style.fontWeight = isActive ? '600' : '';
+    a.style.background = isActive ? 'var(--rose-mist)' : '';
+  });
+
+  // Impressum modal
+  const IMP = C.impressum;
+  document.getElementById('modal-impressum-title').textContent = t(TX.footer.impressum);
+  document.getElementById('modal-impressum-body').innerHTML =
+    '<h3>Angaben gemäß § 5 ECG</h3><p><strong>' + IMP.name + '</strong><br>' + IMP.title + '<br>' + IMP.address + '</p>' +
+    '<h3>Kontakt</h3><p>Telefon: <a href="tel:' + IMP.phone + '">' + IMP.phone + '</a><br>E-Mail: <a href="mailto:' + IMP.email + '">' + IMP.email + '</a></p>' +
+    '<h3>Berufsrecht</h3><p>Berufsbezeichnung: ' + IMP.title + '<br>Zuständige Kammer: ' + IMP.chamber + '<br>Rechtsvorschriften: ' + IMP.law + '</p>' +
+    '<h3>Haftungsausschluss</h3><p>Die Informationen auf dieser Website ersetzen keine ärztliche Beratung.</p>' +
+    '<p style="margin-top:1.5rem;font-size:0.78rem;color:var(--stone-light)">Stand: ' + new Date().getFullYear() + '</p>';
+
+  document.getElementById('modal-datenschutz-title').textContent = t(TX.footer.datenschutz);
+  document.getElementById('modal-datenschutz-body').innerHTML =
+    '<h3>Verantwortliche</h3><p><strong>' + C.name + '</strong><br>' + C.address + ', ' + C.zip + ' ' + C.cityName + '<br><a href="mailto:' + C.email + '">' + C.email + '</a></p>' +
+    '<h3>Grundsatz</h3><p>Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen. Wir verarbeiten Ihre Daten auf Grundlage der DSGVO.</p>' +
+    '<h3>Google Maps</h3><p>Diese Website verwendet Google Maps. Weitere Infos: <a href="https://policies.google.com/privacy" target="_blank">Google Datenschutz</a>.</p>' +
+    '<h3>Ihre Rechte</h3><p>Auskunft, Berichtigung, Löschung – wenden Sie sich an: <a href="mailto:' + C.email + '">' + C.email + '</a></p>' +
+    '<p style="margin-top:1.5rem;font-size:0.78rem;color:var(--stone-light)">Stand: ' + new Date().getFullYear() + ' · Kein Cookie-Banner erforderlich.</p>';
+
+  document.getElementById('modal-partner-title').textContent = t(TX.footer.partner);
+}
+
+// ── Sprachumschaltung ────────────────────────────────────────
+function setLang(l) {
+  if (!ORDI_CONFIG.languages.includes(l)) return;
+  lang = l;
+  renderPage();
+}
+
+// ── Modals ───────────────────────────────────────────────────
+function openModal(which) {
+  document.getElementById('modal-' + which).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+async function loadPartners() {
+  var container = document.getElementById('partner-list');
+  if (!container || container.dataset.loaded === 'true') return;
+  container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--stone-light)">Wird geladen…</div>';
+  try {
+    var resp = await fetch((ORDI_CONFIG.portalUrl || '').replace('frontend','backend').replace('-frontend','') + '/partners/public');
+    var data = await resp.json();
+    var partners = data.data || [];
+    if (partners.length === 0) { container.innerHTML = '<p>Keine Partner eingetragen.</p>'; return; }
+    container.innerHTML = partners.map(p =>
+      '<div style="background:var(--cream);border:0.5px solid var(--border);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1rem">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem">' +
+        '<div style="flex:1">' +
+          (p.specialty ? '<div class="label" style="margin-bottom:0.3rem">' + p.specialty + '</div>' : '') +
+          '<div style="font-family:Cormorant Garamond,serif;font-size:1.2rem">' + p.name + '</div>' +
+          (p.notes ? '<div style="font-size:0.8rem;color:var(--stone-mid);margin-top:0.25rem">' + p.notes + '</div>' : '') +
+        '</div>' +
+        (p.website ? '<a href="https://' + p.website.replace(/^https?:\/\//, '') + '" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem;color:var(--rose);border:0.5px solid var(--rose);border-radius:2px;padding:0.3rem 0.7rem;white-space:nowrap;flex-shrink:0;text-decoration:none">Website →</a>' : '') +
+      '</div>' +
+      (p.address ? '<div style="font-size:0.8rem;color:var(--stone-light);margin-top:0.5rem">📍 ' + p.address + '</div>' : '') +
+      '</div>'
+    ).join('');
+    container.dataset.loaded = 'true';
+  } catch(e) {
+    container.innerHTML = '<p style="color:var(--stone-light)">Partner konnten nicht geladen werden.</p>';
+  }
+}
+
+// ── Mobile Menu ──────────────────────────────────────────────
+function toggleMobileMenu() {
+  const links = document.getElementById('nav-links');
+  if (links.style.display === 'flex') {
+    links.style.display = 'none';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:white;padding:1.5rem 6vw;gap:1.5rem;border-bottom:1px solid var(--border);z-index:99;box-shadow:0 4px 20px rgba(0,0,0,0.08)';
+  }
+}
+
+// ── Sections ein/ausblenden ─────────────────────────────────
+function applySections() {
+  const s = ORDI_CONFIG.sections || {};
+
+  // Stats
+  const statsEl = document.getElementById('hero-stats');
+  if (statsEl && s.stats === false) statsEl.style.display = 'none';
+
+  // Portal Section
+  const portalSection = document.querySelector('.portal-section');
+  if (portalSection && (s.portal === false || !ORDI_CONFIG.portalUrl)) portalSection.style.display = 'none';
+
+  // Team Section
+  const teamSection = document.querySelector('.ueber-section');
+  if (teamSection && s.team === false) teamSection.style.display = 'none';
+
+  // Partner Footer Link
+  const partnerLink = document.getElementById('footer-partner');
+  if (partnerLink && s.partner === false) partnerLink.style.display = 'none';
+}
+
+// ── Scroll Animationen ───────────────────────────────────────
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.leistung-item, .arzt-card, .kontakt-block').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+}
+
+// ── Init ─────────────────────────────────────────────────────
+window.onload = function() {
+  applyColors();
+  buildLangPills();
+  renderPage();
+  applyColors(); // nochmal nach renderPage() damit dynamisch erstellte Elemente die Schrift bekommen
+  initScrollAnimations();
+  applySections();
+};
+</script>
+
+<!-- Schema.org SEO – wird automatisch aus Config generiert -->
+<script>
+window.addEventListener('load', function() {
+  const C = ORDI_CONFIG;
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": C.name,
+    "description": C.specialty + ' in ' + C.cityName,
+    "telephone": C.phone,
+    "email": C.email,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": C.address,
+      "postalCode": C.zip,
+      "addressLocality": C.cityName,
+      "addressCountry": "AT"
+    }
+  };
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify(schema);
+  document.head.appendChild(s);
+});
+</script>
+
+</body>
+</html>
