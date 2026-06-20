@@ -178,6 +178,38 @@
     .mobile-controls { display: flex; }
     footer { flex-direction: column; align-items: flex-start; }
   }
+
+  /* REVIEWS */
+  .reviews-section { padding: 5rem 8vw; background: var(--cream); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .review-card {
+    background: var(--white,#fff);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: box-shadow 0.2s;
+  }
+  .review-card:hover { box-shadow: 0 4px 24px rgba(42,35,32,0.08); }
+  .review-stars { color: #f59e0b; font-size: 1rem; letter-spacing: 2px; }
+  .review-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--stone);
+    line-height: 1.7;
+    flex: 1;
+  }
+  .review-text::before { content: '"'; color: var(--rose); font-size: 1.5rem; line-height: 0; vertical-align: -0.3em; margin-right: 2px; }
+  .review-text::after  { content: '"'; color: var(--rose); font-size: 1.5rem; line-height: 0; vertical-align: -0.3em; margin-left: 2px; }
+  .review-footer { display: flex; justify-content: space-between; align-items: center; }
+  .review-name { font-size: 0.82rem; font-weight: 500; color: var(--stone); }
+  .review-date { font-size: 0.72rem; color: var(--stone-light); }
+  .review-google { display: flex; align-items: center; gap: 4px; font-size: 0.68rem; color: var(--stone-light); margin-top: 0.25rem; }
+  .review-google svg { width: 12px; height: 12px; }
 </style>
 </head>
 <body>
@@ -308,6 +340,25 @@
   </div>
 </section>
 
+<!-- REVIEWS -->
+<section class="reviews-section" id="reviews" style="display:none">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="label">Google Bewertungen</span>
+      <h2 class="heading" id="reviews-h2">Was unsere Patientinnen<br>über uns sagen.</h2>
+    </div>
+    <div class="reviews-grid" id="reviews-grid"></div>
+    <div style="text-align:center;margin-top:2rem">
+      <a href="#" id="reviews-link" target="_blank" rel="noopener noreferrer"
+         style="font-size:0.82rem;color:var(--stone-light);display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:color 0.2s"
+         onmouseover="this.style.color='var(--rose)'" onmouseout="this.style.color='var(--stone-light)'">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.34 5 12c0-4.19 3.22-7.27 7.19-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.33 0 9.25-3.65 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/></svg>
+        Alle Bewertungen auf Google ansehen
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo" id="footer-logo"></div>
@@ -361,6 +412,18 @@ const FONT_PAIRS = {
   modern:  { display: "'Playfair Display', serif",   body: "'DM Sans', sans-serif" },
   clean:   { display: "'Libre Baskerville', serif",  body: "'Source Sans 3', sans-serif" },
 };
+
+// Read URL params for live preview from showcase
+const _params = new URLSearchParams(window.location.search);
+if (_params.get('color')) {
+  const c = decodeURIComponent(_params.get('color'));
+  ORDI_CONFIG.colorPrimary = c;
+  // Auto-generate dark/light/mist from primary color
+  ORDI_CONFIG.colorPrimaryDark = c;
+  ORDI_CONFIG.colorPrimaryLight = c + '20';
+  ORDI_CONFIG.colorPrimaryMist = c + '10';
+}
+if (_params.get('font')) ORDI_CONFIG.font = _params.get('font');
 
 function applyColors() {
   const r = document.documentElement.style;
@@ -614,6 +677,36 @@ function applySections() {
   // Partner Footer Link
   const partnerLink = document.getElementById('footer-partner');
   if (partnerLink && s.partner === false) partnerLink.style.display = 'none';
+
+  // Reviews Section
+  const reviewsSection = document.getElementById('reviews');
+  const reviews = ORDI_CONFIG.reviews || [];
+  if (reviewsSection && s.reviews !== false && reviews.length > 0) {
+    reviewsSection.style.display = 'block';
+    renderReviews(reviews);
+  }
+}
+
+function renderReviews(reviews) {
+  const grid = document.getElementById('reviews-grid');
+  if (!grid) return;
+  grid.innerHTML = reviews.map(r => {
+    const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+    return '<div class="review-card">' +
+      '<div class="review-stars">' + stars + '</div>' +
+      '<div class="review-text">' + r.text + '</div>' +
+      '<div>' +
+        '<div class="review-footer">' +
+          '<span class="review-name">' + r.name + '</span>' +
+          '<span class="review-date">' + (r.date || '') + '</span>' +
+        '</div>' +
+        '<div class="review-google">' +
+          '<svg viewBox="0 0 24 24" fill="#4285F4"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.34 5 12c0-4.19 3.22-7.27 7.19-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.33 0 9.25-3.65 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/></svg>' +
+          'Google Bewertung' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
 // ── Scroll Animationen ───────────────────────────────────────
