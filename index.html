@@ -628,26 +628,7 @@ function toggleMobileMenu() {
   }
 }
 
-// ── Sections ein/ausblenden ─────────────────────────────────
-// placeholder applySections {
-  const s = ORDI_CONFIG.sections || {};
 
-  // Stats
-  const statsEl = document.getElementById('hero-stats');
-  if (statsEl && s.stats === false) statsEl.style.display = 'none';
-
-  // Portal Section
-  const portalSection = document.querySelector('.portal-section');
-  if (portalSection && (s.portal === false || !ORDI_CONFIG.portalUrl)) portalSection.style.display = 'none';
-
-  // Team Section
-  const teamSection = document.querySelector('.ueber-section');
-  if (teamSection && s.team === false) teamSection.style.display = 'none';
-
-  // Partner Footer Link
-  const partnerLink = document.getElementById('footer-partner');
-  if (partnerLink && s.partner === false) partnerLink.style.display = 'none';
-}
 
 
 function renderReviews(reviews) {
