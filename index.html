@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 
 <!-- KONFIGURATIONSDATEI – NUR DIESE DATEI PRO KUNDE ANPASSEN -->
@@ -356,12 +356,39 @@ function t(obj) {
 }
 
 // ── Farben aus Config setzen ─────────────────────────────────
+const FONT_PAIRS = {
+  classic: { display: "'Cormorant Garamond', serif", body: "'Inter', sans-serif" },
+  modern:  { display: "'Playfair Display', serif",   body: "'DM Sans', sans-serif" },
+  clean:   { display: "'Libre Baskerville', serif",  body: "'Source Sans 3', sans-serif" },
+};
+
+// Read URL params for live preview from showcase
+const _params = new URLSearchParams(window.location.search);
+if (_params.get('color')) {
+  const c = decodeURIComponent(_params.get('color'));
+  ORDI_CONFIG.colorPrimary = c;
+  // Auto-generate dark/light/mist from primary color
+  ORDI_CONFIG.colorPrimaryDark = c;
+  ORDI_CONFIG.colorPrimaryLight = c + '20';
+  ORDI_CONFIG.colorPrimaryMist = c + '10';
+}
+if (_params.get('font')) ORDI_CONFIG.font = _params.get('font');
+
 function applyColors() {
   const r = document.documentElement.style;
   r.setProperty('--rose',        ORDI_CONFIG.colorPrimary);
   r.setProperty('--rose-deep',   ORDI_CONFIG.colorPrimaryDark);
   r.setProperty('--rose-light',  ORDI_CONFIG.colorPrimaryLight);
   r.setProperty('--rose-mist',   ORDI_CONFIG.colorPrimaryMist);
+
+  // Schriftart anwenden
+  const pair = FONT_PAIRS[ORDI_CONFIG.font || 'classic'] || FONT_PAIRS.classic;
+  r.setProperty('--font-display', pair.display);
+  r.setProperty('--font-body',    pair.body);
+  document.body.style.fontFamily = pair.body;
+  document.querySelectorAll('.display, .heading, .arzt-name, .nav-logo, .footer-logo, .times-doc-name, .leistung-name, .modal-header h2').forEach(el => {
+    el.style.fontFamily = pair.display;
+  });
 }
 
 // ── Sprach-Buttons bauen ─────────────────────────────────────
@@ -580,6 +607,27 @@ function toggleMobileMenu() {
   }
 }
 
+// ── Sections ein/ausblenden ─────────────────────────────────
+function applySections() {
+  const s = ORDI_CONFIG.sections || {};
+
+  // Stats
+  const statsEl = document.getElementById('hero-stats');
+  if (statsEl && s.stats === false) statsEl.style.display = 'none';
+
+  // Portal Section
+  const portalSection = document.querySelector('.portal-section');
+  if (portalSection && (s.portal === false || !ORDI_CONFIG.portalUrl)) portalSection.style.display = 'none';
+
+  // Team Section
+  const teamSection = document.querySelector('.ueber-section');
+  if (teamSection && s.team === false) teamSection.style.display = 'none';
+
+  // Partner Footer Link
+  const partnerLink = document.getElementById('footer-partner');
+  if (partnerLink && s.partner === false) partnerLink.style.display = 'none';
+}
+
 // ── Scroll Animationen ───────────────────────────────────────
 function initScrollAnimations() {
   const observer = new IntersectionObserver((entries) => {
@@ -603,7 +651,9 @@ window.onload = function() {
   applyColors();
   buildLangPills();
   renderPage();
+  applyColors(); // nochmal nach renderPage() damit dynamisch erstellte Elemente die Schrift bekommen
   initScrollAnimations();
+  applySections();
 };
 </script>
 
