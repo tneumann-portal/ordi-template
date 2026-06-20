@@ -37,8 +37,8 @@ const ORDI_CONFIG = {
   },
 
   reviews: [
-    { stars: 5, name: "Lejla B.", text: "Fr. Dr. Neumann und Hr. Dr. Neumann sind mit Abstand die zwei nettesten Aerzte die ich je erlebt habe. In ihrer Ordination fuehlt man sich wie in einer Wohlfuhloase. Ich empfehle diese Ordination vom ganzen Herzen.", date: "DocFinder" },
-    { stars: 5, name: "Patientin", text: "Einer der wenigen Gynaekologen die wissen dass man Frauen zuhoeren muss. Dr. Neumann ist ein Arzt mit viel Erfahrung und scharfem Blick fuers Wesentliche. Kurze Wartezeiten, da bleibt man gerne.", date: "DocFinder" },
+    { stars: 5, name: "Lejla B.", text: "Fr. Dr. Neumann und Hr. Dr. Neumann sind mit Abstand die zwei nettesten Ärzte die ich je erlebt habe. In ihrer Ordination fuehlt man sich wie in einer Wohlfühloase. Ich empfehle diese Ordination vom ganzen Herzen.", date: "DocFinder" },
+    { stars: 5, name: "Patientin", text: "Einer der wenigen Gynäkologen die wissen dass man Frauen zuhören muss. Dr. Neumann ist ein Arzt mit viel Erfahrung und scharfem Blick fürs Wesentliche. Kurze Wartezeiten, da bleibt man gerne.", date: "DocFinder" },
     { stars: 5, name: "Patientin", text: "Super Arzt. Sehr kompetent und freundlich. Hat mich wegen Endometriose operiert und danach super betreut. Sehr empfehlenswert!", date: "DocFinder" },
   ],
 
